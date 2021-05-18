@@ -5,13 +5,20 @@
       <router-link to="/about">About</router-link>
     </div>
     <p @click='$store.commit("add")'>{{$store.state.counter}}</p>
-    <p @click='$store.dispatch("add")'>==={{$store.state.counter}}</p>
+    <p @click='clickNumber'>==={{$store.state.counter}}</p>
+    <p>double==={{$store.getters.doubleCouter}}</p>
     <router-view/>
   </div>
 </template>
 
 <script>
 export default {
+  methods: {
+    clickNumber () {
+      this.$store.dispatch('add')
+      console.log(this.$store.getters)
+    }
+  }
 
 }
 </script>

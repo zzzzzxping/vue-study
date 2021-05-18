@@ -6,15 +6,31 @@ class Store {
   constructor (options) {
     this._mutations = options.mutations
     this._actions = options.actions
+    this._getters = options.getters
     // Vue.util.defineReactive(this, 'state', options.state)
     // this.state = new Vue({
     //   data: options.state
     // })
+
+    const computed = {}
+    this.getters = {}
+    for (const key in this._getters) {
+      computed[key] = () => {
+        return this._getters[key](this.state)
+      }
+      Object.defineProperty(this.getters, key, {
+        get: () => {
+          return this._vm[key]
+        }
+      })
+    }
+
     this._vm = new Vue({
       data: {
         // 添加$$，vue就不会代理
         $$state: options.state
-      }
+      },
+      computed: computed
     })
     this.commit = this.commit.bind(this)
     this.dispatch = this.dispatch.bind(this)
