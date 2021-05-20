@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    // 定义拦截，给obj定义响应式属性
+    function defineReactive (obj, key, value) {
+      Object.defineProperty(obj, key, {
+        get () {
+          console.log('get', key)
+          return value
+        },
+        set (newVal) {
+          if (newVal !== value) {
+            console.log('set', newVal)
+            value = newVal
+            // update()
+            observe(newVal)
+          }
+        }
+      })
+    }
+
+    // var obj = {}
+    // defineReactive(obj, 'foo', 'foo')
+
+    function update () {
+      // app.innerText = obj.foo
+    }
+    setInterval(_ => {
+      // obj.foo = new Date()
+      // obj.bar = new Date().getSeconds()
+    }, 1000)
+
+    // 遍历响应式处理，递归的对obj的所有属性定义响应式
+    function observe (obj) {
+      if (typeof obj !== 'object' || obj === null) {
+        return obj
+      }
+      Object.keys(obj).forEach(key => {
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+          observe(obj[key])
+        }
+        defineReactive(obj, key, obj[key])
+      })
+    }
+
+    function set (obj, key, value) {
+      defineReactive(obj, key, value)
+    }
+
+    var obj = {
+      foo: 'foo',
+      bar: 'bar',
+      baz: {}
+    }
+    observe(obj)
+    obj.baz = {
+      n: 1
+    }
+    obj.baz.n
+    
+    set(obj, 'dong', 'dong')
+    obj.dong
+  </script>
+</body>
+</html>
