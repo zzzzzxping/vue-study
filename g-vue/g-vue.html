@@ -10,6 +10,7 @@
   <div id="app">
     {{counter}}
     <p g-text="counter"></p>
+    <p g-html="desc"></p>
   </div>
   <!-- <script src="../node_modules/vue/dist/vue.js"></script> -->
   <script src="./g-vue.js"></script>
@@ -17,7 +18,8 @@
     const _app = new GVue({
       el: '#app',
       data: {
-        counter: 1
+        counter: 1,
+        desc: '<a style="color: red;">点击</a>'
       }
     })
     setInterval(_ => {
